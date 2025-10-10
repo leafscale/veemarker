@@ -1,0 +1,12 @@
+{
+  "text": "Hello World",
+  "spacedText": "   Trimmed Text   ",
+  "emptyString": "",
+  "isActive": true,
+  "isInactive": false,
+  "debugMode": false,
+  "htmlText": "<div class=\"container\">Hello</div>",
+  "jsonText": "{\"name\": \"value\"}",
+  "firstName": "john",
+  "lastName": "doe"
+}

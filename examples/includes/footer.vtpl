@@ -1,0 +1,8 @@
+<#-- Footer Component -->
+    <hr>
+    <footer>
+        <p>&copy; ${copyright_year} ${company_name}. All rights reserved.</p>
+        <p>Built with VeeMarker Template Engine</p>
+    </footer>
+</body>
+</html>

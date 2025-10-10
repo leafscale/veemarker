@@ -1,0 +1,47 @@
+<#-- Map/Hash operations -->
+
+<#-- Basic map access -->
+User profile:
+  Name: ${profile.name}
+  Age: ${profile.age}
+  Email: ${profile.email}
+  Active: ${profile.active?c}
+
+<#-- Map with bracket notation -->
+Configuration:
+  Host: ${config["host"]}
+  Port: ${config["port"]}
+  Debug: ${config["debug"]?c}
+
+<#-- Nested maps -->
+Company structure:
+  Name: ${company.name}
+  CEO: ${company.ceo.name}
+  CEO Email: ${company.ceo.email}
+  Departments:
+  <#list company.departments as dept>
+    - ${dept.name} (${dept.employeeCount} employees)
+  </#list>
+
+<#-- Iterating over map keys (simulated with known structure) -->
+Settings:
+  Theme: ${settings.theme}
+  Language: ${settings.language}
+  Timezone: ${settings.timezone}
+  Notifications: ${settings.notifications?c}
+
+<#-- Complex nested structure -->
+API Response:
+  Status: ${apiResponse.status}
+  Code: ${apiResponse.code}
+  Data:
+    User ID: ${apiResponse.data.userId}
+    Username: ${apiResponse.data.username}
+    Permissions: ${apiResponse.data.permissions?join(", ")}
+  Meta:
+    Request ID: ${apiResponse.meta.requestId}
+    Timestamp: ${apiResponse.meta.timestamp}
+
+<#-- Map size and content checks -->
+Profile has content: ${profile?has_content?c}
+Profile size: ${profile?size}

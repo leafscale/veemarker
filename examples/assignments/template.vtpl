@@ -1,0 +1,91 @@
+<#-- VeeMarker Assignments Example -->
+=====================================
+Variable Assignments in VeeMarker
+=====================================
+
+1. Basic Variable Assignment
+-----------------------------
+<#assign greeting = "Hello, World!">
+${greeting}
+
+<#assign year = 2024>
+Current year: ${year}
+
+2. String Concatenation Assignment
+-----------------------------------
+<#assign full_name = first_name + " " + last_name>
+Full name: ${full_name}
+
+3. Arithmetic Assignments
+-------------------------
+Base Price: $${base_price}
+Tax Rate: ${tax_rate * 100}%
+
+<#assign discount_amount = base_price * discount_percentage / 100>
+Discount Amount: $${discount_amount}
+
+<#assign tax_amount = base_price * tax_rate>
+Tax Amount: $${tax_amount}
+
+<#assign final_price = base_price - discount_amount + tax_amount>
+Final Price: $${final_price}
+
+4. Creating New Variables
+-------------------------
+<#assign welcome_message = "Welcome to our store!">
+<#assign special_offer = "Get 10% off today!">
+
+${welcome_message}
+${special_offer}
+
+5. Assigning Lists
+------------------
+<#assign fruits = ["apple", "banana", "orange"]>
+Fruits available:
+<#list fruits as fruit>
+  - ${fruit}
+</#list>
+
+6. Assigning Maps/Objects
+-------------------------
+<#assign user = {"name": "Jane", "age": 30, "city": "New York"}>
+User Info:
+  Name: ${user.name}
+  Age: ${user.age}
+  City: ${user.city}
+
+7. Calculations in Lists
+-------------------------
+Product Summary:
+<#assign total = 0>
+<#list products as product>
+  ${product.name}: ${product.quantity} x $${product.price} = $${product.quantity * product.price}
+  <#assign total = total + (product.quantity * product.price)>
+</#list>
+---
+Total: $${total}
+
+8. Complex Assignments
+----------------------
+<#assign status_message = "">
+<#if total > 200>
+  <#assign status_message = "Eligible for free shipping!">
+<#else>
+  <#assign status_message = "Add more items for free shipping">
+</#if>
+Status: ${status_message}
+
+9. Multiple Assignments
+------------------------
+<#assign
+  company = "VeeMarker Inc."
+  department = "Sales"
+  region = "North America"
+>
+Company: ${company}
+Department: ${department}
+Region: ${region}
+
+=====================================
+End of Assignments Example
+=====================================

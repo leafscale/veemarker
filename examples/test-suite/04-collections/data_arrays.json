@@ -1,0 +1,28 @@
+{
+  "fruits": ["apple", "banana", "orange", "grape", "watermelon"],
+  "matrix": [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+  ],
+  "students": [
+    {
+      "name": "Alice",
+      "grade": 90,
+      "subjects": ["Math", "Science", "English"]
+    },
+    {
+      "name": "Bob",
+      "grade": 85,
+      "subjects": ["History", "Art", "PE"]
+    },
+    {
+      "name": "Charlie",
+      "grade": 92,
+      "subjects": ["Math", "Music", "Computer Science"]
+    }
+  ],
+  "numbers": [1, 2, 3, 4, 5],
+  "scores": [65, 78, 82, 91, 88, 73, 95],
+  "colors": ["red", "green", "blue", "yellow"]
+}

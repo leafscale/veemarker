@@ -1,0 +1,9 @@
+<#-- Test attempt/recover where attempt succeeds -->
+Testing attempt/recover - success case:
+
+<#attempt>
+Attempting to access: ${name}
+This should work: ${greeting}
+<#recover>
+This should not appear!
+</#attempt>

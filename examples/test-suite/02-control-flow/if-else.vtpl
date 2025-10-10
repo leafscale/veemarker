@@ -1,0 +1,65 @@
+<#-- Basic if/else examples -->
+
+<#-- Simple if statement -->
+<#if user.active>
+User ${user.name} is active!
+</#if>
+
+<#-- if/else -->
+<#if score >= 90>
+Grade: A
+<#else>
+Grade: Not A
+</#if>
+
+<#-- Nested conditions -->
+<#if age >= 18>
+  <#if hasLicense>
+    Can drive a car
+  <#else>
+    Adult but no license
+  </#if>
+<#else>
+  Too young to drive
+</#if>
+
+<#-- Boolean expressions -->
+<#if isLoggedIn && hasPermission>
+  Access granted
+<#else>
+  Access denied
+</#if>
+
+<#-- Comparison operators -->
+<#if count > 0>
+  Items in cart: ${count}
+<#else>
+  Your cart is empty
+</#if>
+
+<#-- String comparison -->
+<#if status == "active">
+  ✅ Active status
+<#else>
+  ❌ Inactive status
+</#if>
+
+<#-- Negation -->
+<#if !error>
+  No errors found
+<#else>
+  Error: ${error}
+</#if>
+
+<#-- Complex boolean logic -->
+<#if temperature > 30 || humidity > 80>
+  Weather alert: Hot or humid conditions
+</#if>
+
+<#-- Using ?then built-in for inline conditionals -->
+Status: ${isOnline?then("Online", "Offline")}
+Membership: ${isPremium?then("Premium", "Basic")}
+
+<#-- Boolean to string conversions -->
+Debug mode: ${debugMode?string}
+Verbose: ${verbose?c}

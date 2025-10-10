@@ -1,0 +1,59 @@
+<#-- Advanced string operations -->
+
+<#-- String contains -->
+Sentence: "${sentence}"
+Contains "quick": ${sentence?contains("quick")?c}
+Contains "slow": ${sentence?contains("slow")?c}
+
+<#-- Starts/ends with -->
+URL: ${url}
+Starts with "https": ${url?starts_with("https")?c}
+Ends with ".com": ${url?ends_with(".com")?c}
+
+<#-- Replace operations -->
+Original: ${text}
+Replace "old" with "new": ${text?replace("old", "new")}
+
+<#-- Split and join -->
+CSV data: ${csvData}
+<#assign items = csvData?split(",")>
+
+Split items:
+<#list items as item>
+  - ${item}
+</#list>
+
+Joined with " | ": ${items?join(" | ")}
+
+<#-- Working with paths -->
+File path: ${filePath}
+<#assign pathParts = filePath?split("/")>
+Filename: ${pathParts?last}
+
+<#-- Working with emails -->
+Email: ${email}
+<#assign emailParts = email?split("@")>
+Username: ${emailParts?first}
+Domain: ${emailParts?last}
+
+<#-- Multiline text processing -->
+Paragraph:
+${paragraph}
+
+<#assign lines = paragraph?split("\n")>
+Number of lines: ${lines?size}
+First line: ${lines?first}
+
+<#-- URL parameter extraction -->
+Query string: ${queryString}
+<#assign params = queryString?split("&")>
+
+Parameters:
+<#list params as param>
+  <#assign keyValue = param?split("=")>
+  ${keyValue[0]}: ${keyValue[1]!""}
+</#list>
+
+<#-- Combining multiple operations -->
+Product code: ${productCode}
+Cleaned: ${productCode?upper_case?replace("-", "")?trim}

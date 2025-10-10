@@ -1,0 +1,74 @@
+<#-- VeeMarker Macros Example -->
+
+<#-- Define a simple greeting macro -->
+<#macro greet name>
+Hello, ${name}!
+</#macro>
+
+<#-- Define a user card macro with parameters -->
+<#macro userCard user>
+================================
+Name: ${user.name}
+Role: ${user.role}
+Email: ${user.email}
+================================
+</#macro>
+
+<#-- Define a product listing macro -->
+<#macro productItem product>
+Product: ${product.name}
+Price: $${product.price}
+Status: <#if product.in_stock>In Stock<#else>Out of Stock</#if>
+</#macro>
+
+<#-- Define a header macro that uses site data -->
+<#macro pageHeader title>
+========================================
+${title}
+========================================
+© ${current_year} - ${site_title}
+</#macro>
+
+=====================================
+Macros in VeeMarker
+=====================================
+
+1. Simple Macro Call
+--------------------
+<@greet name="World"/>
+<@greet name="VeeMarker"/>
+
+2. User Cards Using Macro
+-------------------------
+<#list users as user>
+<@userCard user=user/>
+</#list>
+
+3. Product Listing
+------------------
+Available Products:
+
+<#list products as product>
+<@productItem product=product/>
+---
+</#list>
+
+4. Page Header Macro
+--------------------
+<@pageHeader title="Welcome to Macros Example"/>
+
+5. Nested Macro Usage
+---------------------
+<#macro teamSection team>
+Team Members:
+<#list team as member>
+<@userCard user=member/>
+</#list>
+</#macro>
+
+Our Team:
+<@teamSection team=users/>
+
+=====================================
+End of Macros Example
+=====================================

@@ -1,0 +1,10 @@
+{
+  "price": 29.99,
+  "quantity": 7,
+  "user": {
+    "isPremium": true,
+    "hasSubscription": true
+  },
+  "firstName": "John",
+  "lastName": "Doe"
+}

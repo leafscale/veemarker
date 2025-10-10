@@ -1,0 +1,43 @@
+<#-- Basic string built-in functions -->
+
+Original text: "${text}"
+
+<#-- Case transformations -->
+Uppercase: ${text?upper_case}
+Lowercase: ${text?lower_case}
+Capital first: ${text?cap_first}
+
+<#-- Trimming -->
+Original with spaces: "${spacedText}"
+Trimmed: "${spacedText?trim}"
+
+<#-- Length and content checks -->
+Length of text: ${text?length}
+Has content: ${text?has_content?c}
+Empty string has content: ${emptyString?has_content?c}
+
+<#-- Reverse -->
+Reversed: ${text?reverse}
+
+<#-- Boolean string representations -->
+Boolean true as string: ${isActive?string}
+Boolean true as c: ${isActive?c}
+Boolean false as string: ${isInactive?string}
+Boolean false as c: ${isInactive?c}
+
+<#-- Using ?then for conditional text -->
+Status: ${isActive?then("System is running", "System is stopped")}
+Mode: ${debugMode?then("DEBUG", "PRODUCTION")}
+
+<#-- String with special characters -->
+HTML text: ${htmlText}
+JSON text: ${jsonText}
+
+<#-- Combining operations -->
+Uppercase then reverse: ${text?upper_case?reverse}
+Trim then length: ${spacedText?trim?length}
+
+<#-- Working with names -->
+Full name: ${firstName} ${lastName}
+Formatted: ${firstName?cap_first} ${lastName?upper_case}
+Initials: ${firstName[0]}${lastName[0]}

@@ -1,0 +1,74 @@
+<#-- VeeMarker Hello World Template -->
+<#-- This template demonstrates various VeeMarker features -->
+
+========================================
+${greeting?upper_case}, ${name?upper_case}!
+========================================
+
+Welcome to VeeMarker - A FreeMarker-compatible template engine for V!
+
+Current year: ${year}
+PI value: ${pi}
+
+<#-- User Information Section -->
+User Profile:
+-------------
+<#if user.premium>
+⭐ Premium Member
+<#else>
+Regular Member
+</#if>
+Username: ${user.username}
+Level: ${user.level}
+<#if user.level > 40>
+Status: Expert (Level ${user.level})
+<#else>
+Status: Learning (Level ${user.level})
+</#if>
+
+<#-- List Iteration Example -->
+Things to do:
+-------------
+<#list items as item>
+  ${item_index + 1}. ${item}
+</#list>
+
+<#-- Variable Assignment -->
+<#assign message = "VeeMarker is awesome!">
+<#assign calc = year + 5>
+
+Special Message: ${message?lower_case}
+In 5 years it will be: ${calc}
+
+<#-- Expression Examples -->
+Calculations:
+-------------
+Year + 100 = ${year + 100}
+PI * 2 = ${pi * 2}
+Is 2025? ${year == 2025}
+
+<#-- String Manipulations -->
+Text Processing:
+----------------
+Original: ${greeting}, ${name}!
+Uppercase: ${greeting?upper_case}, ${name?upper_case}!
+Length of greeting: ${greeting?length}
+
+<#-- Nested Conditionals -->
+<#if user.premium>
+<#if user.level > 50>
+🏆 You're a premium expert user!
+<#else>
+⭐ Welcome premium member! Keep leveling up!
+</#if>
+<#else>
+Consider upgrading to premium for more features.
+</#if>
+
+<#-- Array Access Example -->
+First task: ${items[0]}
+Total tasks: ${items?size}
+
+========================================
+Thank you for trying VeeMarker!
+========================================

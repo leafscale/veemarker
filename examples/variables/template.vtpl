@@ -1,0 +1,40 @@
+<#-- VeeMarker Variables Example -->
+====================================
+Variable Interpolation in VeeMarker
+====================================
+
+1. Simple Variables
+-------------------
+Name: ${name}
+Age: ${age}
+Pi: ${pi}
+Active: ${active}
+
+2. Nested Objects
+-----------------
+Address:
+  Street: ${address.street}
+  City: ${address.city}
+  ZIP: ${address.zip}
+
+3. Array Access
+---------------
+Hobbies:
+  First hobby: ${hobbies[0]}
+  Second hobby: ${hobbies[1]}
+  Third hobby: ${hobbies[2]}
+
+4. Default Values
+-----------------
+<#-- Use default values when variables might not exist -->
+Nickname: ${nickname!"No nickname"}
+Score: ${score!0}
+
+5. Comments
+-----------
+<#-- This is a comment and won't be rendered -->
+The above line is a comment in the template
+
+====================================
+End of Variables Example
+====================================

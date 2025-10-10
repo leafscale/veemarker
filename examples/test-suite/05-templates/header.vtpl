@@ -1,0 +1,15 @@
+<#-- Reusable header component -->
+<header>
+  <h1>${site_name!"Default Site"}</h1>
+  <nav>
+    <ul>
+      <#if nav_items??>
+        <#list nav_items as item>
+          <li><a href="${item.url}">${item.label}</a></li>
+        </#list>
+      <#else>
+        <li><a href="/">Home</a></li>
+      </#if>
+    </ul>
+  </nav>
+</header>

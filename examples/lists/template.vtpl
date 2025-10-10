@@ -1,0 +1,58 @@
+<#-- VeeMarker Lists Example -->
+=====================================
+List Iteration in VeeMarker
+=====================================
+
+1. Simple List
+--------------
+Products:
+<#list products as product>
+  - ${product}
+</#list>
+
+2. List of Objects
+------------------
+User Table:
+<#list users as user>
+  Name: ${user.name}
+  Role: ${user.role}
+  Active: ${user.active?c}
+  ---
+</#list>
+
+3. Nested Lists
+---------------
+Categories and Items:
+<#list categories as category>
+
+Category: ${category.name}
+<#if category.items?size > 0>
+Items:
+<#list category.items as item>
+  - ${item}
+</#list>
+<#else>
+  (No items in this category)
+</#if>
+</#list>
+
+4. Empty List Handling
+----------------------
+Empty list demonstration:
+<#if empty_list?size > 0>
+<#list empty_list as item>
+  - ${item}
+</#list>
+<#else>
+  The list is empty!
+</#if>
+
+5. Numbers List
+---------------
+<#list numbers as num>
+Number: ${num}
+</#list>
+
+=====================================
+End of Lists Example
+=====================================

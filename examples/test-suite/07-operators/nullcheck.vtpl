@@ -1,0 +1,11 @@
+<#-- Test null-check operator -->
+Testing null-check operator:
+
+Variable exists: ${name??}
+Variable with content: ${greeting??}
+Empty string: ${empty??}
+Missing variable: ${nonexistent??}
+
+With defaults:
+Name or Guest: ${name!"Guest"}
+Missing or Default: ${nonexistent!"Default"}

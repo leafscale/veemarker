@@ -1,0 +1,10 @@
+<#-- Reusable footer component -->
+<footer>
+  <p>&copy; ${copyright_year} ${company_name!"Your Company"}. All rights reserved.</p>
+  <#if show_social_links?? && show_social_links>
+    <div class="social-links">
+      <a href="https://twitter.com/${twitter_handle!"company"}">Twitter</a>
+      <a href="https://github.com/${github_handle!"company"}">GitHub</a>
+    </div>
+  </#if>
+</footer>

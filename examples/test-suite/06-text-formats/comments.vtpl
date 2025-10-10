@@ -1,0 +1,22 @@
+<#-- FreeMarker Comments Example -->
+
+<#-- Single-line comment -->
+This text will be displayed.
+
+<#--
+    Multi-line comment
+    Can span multiple lines
+    And contain any text
+-->
+
+The following shows how comments are used:
+
+<#-- Variable setup (not visible in output) -->
+<#assign pageTitle = "Comment Example">
+
+<h1>${pageTitle}</h1>
+
+<#-- TODO: Add more examples later -->
+<#-- NOTE: Comments are completely removed from output -->
+
+Final text after comments.

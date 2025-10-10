@@ -1,0 +1,24 @@
+{
+  "page_title": "My Website - Home",
+  "site_name": "My Awesome Website",
+  "nav_items": [
+    {"label": "Home", "url": "/"},
+    {"label": "About", "url": "/about"},
+    {"label": "Services", "url": "/services"},
+    {"label": "Contact", "url": "/contact"}
+  ],
+  "content_title": "Welcome to Our Site",
+  "content_body": "This is where our amazing content goes. We're demonstrating how templates can be composed using includes.",
+  "include_sidebar": true,
+  "sidebar_items": [
+    "Recent Posts",
+    "Categories",
+    "Archives",
+    "Newsletter Signup"
+  ],
+  "copyright_year": 2024,
+  "company_name": "Example Corp",
+  "show_social_links": true,
+  "twitter_handle": "examplecorp",
+  "github_handle": "example-corp"
+}

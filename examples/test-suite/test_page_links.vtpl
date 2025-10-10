@@ -1,0 +1,12 @@
+<#assign page = "contenteditor">
+<#if page?has_content>
+    <#if page == "cms">
+        <link rel="stylesheet" href="/static/css/admin/pages/cms.css">
+    <#elseif page == "contenteditor">
+        <link rel="stylesheet" href="/static/css/admin/pages/contenteditor.css">
+    <#elseif page == "menueditor">
+        <link rel="stylesheet" href="/static/css/admin/pages/menueditor.css">
+    <#elseif page == "users">
+        <link rel="stylesheet" href="/static/css/admin/pages/users.css">
+    </#if>
+</#if>

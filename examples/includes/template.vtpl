@@ -1,0 +1,29 @@
+<#-- VeeMarker Includes Example -->
+<#include "header.vtpl">
+
+<main>
+    <h1>${main_heading}</h1>
+    <p>${description}</p>
+    
+    <section>
+        <h2>Features Demonstrated</h2>
+        <ul>
+            <li>Template includes for modular design</li>
+            <li>Shared header and footer components</li>
+            <li>Context passing to included templates</li>
+            <li>Template composition patterns</li>
+        </ul>
+    </section>
+    
+    <section>
+        <h2>Benefits of Template Includes</h2>
+        <ul>
+            <li>Code reusability - write once, use many times</li>
+            <li>Maintainability - update in one place</li>
+            <li>Consistency - same components across pages</li>
+            <li>Separation of concerns - logical template organization</li>
+        </ul>
+    </section>
+</main>
+
+<#include "footer.vtpl">

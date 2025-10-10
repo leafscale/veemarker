@@ -1,0 +1,20 @@
+{
+  "name": "Alice",
+  "greeting": "Welcome",
+  "price": 19.99,
+  "quantity": 3,
+  "user": {
+    "name": "Alice Johnson",
+    "email": "alice@example.com",
+    "age": 25,
+    "status": "active",
+    "address": {
+      "street": "123 Main Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "zip": "94102"
+    }
+  },
+  "hobbies": ["reading", "hiking", "photography"],
+  "optional": "This field exists"
+}

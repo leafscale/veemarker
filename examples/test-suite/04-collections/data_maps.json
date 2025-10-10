@@ -1,0 +1,44 @@
+{
+  "profile": {
+    "name": "John Doe",
+    "age": 30,
+    "email": "john@example.com",
+    "active": true
+  },
+  "config": {
+    "host": "localhost",
+    "port": 8080,
+    "debug": false
+  },
+  "company": {
+    "name": "TechCorp",
+    "ceo": {
+      "name": "Jane Smith",
+      "email": "ceo@techcorp.com"
+    },
+    "departments": [
+      {"name": "Engineering", "employeeCount": 50},
+      {"name": "Sales", "employeeCount": 30},
+      {"name": "Marketing", "employeeCount": 20}
+    ]
+  },
+  "settings": {
+    "theme": "dark",
+    "language": "en",
+    "timezone": "UTC",
+    "notifications": true
+  },
+  "apiResponse": {
+    "status": "success",
+    "code": 200,
+    "data": {
+      "userId": 12345,
+      "username": "johndoe",
+      "permissions": ["read", "write", "admin"]
+    },
+    "meta": {
+      "requestId": "abc-123-def",
+      "timestamp": "2024-01-15T10:30:00Z"
+    }
+  }
+}

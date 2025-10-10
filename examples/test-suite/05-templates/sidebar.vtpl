@@ -1,0 +1,13 @@
+<#-- Sidebar component -->
+<aside class="sidebar">
+  <h3>Sidebar</h3>
+  <#if sidebar_items??>
+    <ul>
+      <#list sidebar_items as item>
+        <li>${item}</li>
+      </#list>
+    </ul>
+  <#else>
+    <p>No sidebar items available.</p>
+  </#if>
+</aside>

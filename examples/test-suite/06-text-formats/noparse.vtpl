@@ -1,0 +1,34 @@
+<#-- NoP
+
+arse directive to show literal FreeMarker code -->
+
+# FreeMarker Code Examples
+
+Here are some FreeMarker template examples:
+
+<#noparse>
+## Variable Interpolation
+To display a variable: ${variableName}
+With default value: ${variableName!"default"}
+
+## Conditional Logic
+<#if condition>
+  This is shown when true
+<#else>
+  This is shown when false
+</#if>
+
+## List Iteration
+<#list items as item>
+  - ${item.name}: ${item.value}
+</#list>
+
+## Comments
+<#-- This is a FreeMarker comment -->
+</#noparse>
+
+## Regular Output
+
+This text is processed normally.
+Current time: ${timestamp}
+User: ${username!"Guest"}

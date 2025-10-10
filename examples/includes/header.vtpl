@@ -1,0 +1,21 @@
+<#-- Header Component -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${page_title} - ${site_name}</title>
+</head>
+<body>
+    <header>
+        <h1>${site_name}</h1>
+        <nav>
+            <ul>
+<#list nav_items as item>
+                <li>${item}</li>
+</#list>
+            </ul>
+        </nav>
+        <div>Welcome, ${username}!</div>
+    </header>
+    <hr>

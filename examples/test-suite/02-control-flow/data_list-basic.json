@@ -1,0 +1,26 @@
+{
+  "items": ["Apples", "Bananas", "Oranges", "Grapes"],
+  "movies": ["The Matrix", "Inception", "Interstellar", "The Dark Knight"],
+  "users": [
+    {"name": "Alice", "email": "alice@example.com", "role": "Admin"},
+    {"name": "Bob", "email": "bob@example.com", "role": "User"},
+    {"name": "Charlie", "email": "charlie@example.com", "role": "Moderator"}
+  ],
+  "products": [
+    {"name": "Laptop", "price": 999.99, "description": "High-performance laptop", "inStock": true},
+    {"name": "Mouse", "price": 29.99, "description": "Wireless mouse", "inStock": true},
+    {"name": "Keyboard", "price": 79.99, "description": "Mechanical keyboard", "inStock": false}
+  ],
+  "tasks": [
+    {"title": "Write documentation", "completed": true},
+    {"title": "Fix bug #123", "completed": false},
+    {"title": "Review PR", "completed": true},
+    {"title": "Deploy to production", "completed": false}
+  ],
+  "orderItems": [
+    {"name": "Widget A", "quantity": 2, "price": 10.00},
+    {"name": "Widget B", "quantity": 1, "price": 25.00},
+    {"name": "Widget C", "quantity": 3, "price": 5.00}
+  ],
+  "colors": ["Red", "Green", "Blue", "Yellow"]
+}

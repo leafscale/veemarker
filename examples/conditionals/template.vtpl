@@ -1,0 +1,85 @@
+<#-- VeeMarker Conditionals Example -->
+=====================================
+Conditional Logic in VeeMarker
+=====================================
+
+1. Basic If/Else
+-----------------
+<#if user.premium>
+Welcome, Premium Member ${user.name}!
+You have access to all features.
+<#else>
+Hello ${user.name}!
+Consider upgrading to premium for more features.
+</#if>
+
+2. Boolean Expressions
+----------------------
+<#if user.age >= 18>
+You are an adult.
+<#else>
+You are a minor.
+</#if>
+
+<#if user.level > 40>
+You are an experienced user (Level ${user.level}).
+</#if>
+
+3. ElseIf Chains
+----------------
+<#-- Grade evaluation with multiple conditions -->
+Your score: ${score}%
+<#if score >= 90>
+Grade: A - Excellent!
+<#elseif score >= 80>
+Grade: B - Good job!
+<#elseif score >= 70>
+Grade: C - Satisfactory
+<#elseif score >= 60>
+Grade: D - Needs improvement
+<#else>
+Grade: F - Please retake the exam
+</#if>
+
+4. Complex Conditions
+---------------------
+<#-- Stock availability check -->
+Stock level: ${stock_count} items
+<#if stock_count > 10>
+In stock - plenty available!
+<#elseif stock_count > 0>
+Limited stock - only ${stock_count} left!
+<#else>
+Out of stock - sorry!
+</#if>
+
+5. Logical Operators
+--------------------
+<#-- Weekend and temperature check -->
+<#if is_weekend && temperature > 20>
+Perfect weather for outdoor activities!
+<#elseif is_weekend>
+It's the weekend, but the weather isn't great (${temperature}°C).
+<#else>
+It's a weekday. Current temperature: ${temperature}°C
+</#if>
+
+6. Nested Conditionals
+----------------------
+<#if user??>
+  <#if user.premium>
+    <#if user.level > 50>
+Premium Elite User: ${user.name} (Level ${user.level})
+    <#else>
+Premium User: ${user.name} (Level ${user.level})
+    </#if>
+  <#else>
+Standard User: ${user.name}
+  </#if>
+<#else>
+No user data available
+</#if>
+
+=====================================
+End of Conditionals Example
+=====================================

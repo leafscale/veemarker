@@ -1,0 +1,54 @@
+<#-- Array operations and indexing -->
+
+<#-- Basic array access -->
+Fruits array: 
+<#list fruits as fruit>
+  ${fruit_index}: ${fruit}
+</#list>
+
+First fruit: ${fruits[0]}
+Second fruit: ${fruits[1]}
+Last fruit: ${fruits?last}
+
+<#-- Array properties -->
+Array size: ${fruits?size}
+Has content: ${fruits?has_content?c}
+
+<#-- Nested arrays -->
+Matrix:
+<#list matrix as row>
+  Row ${row_index}:
+  <#list row as cell>
+    [${row_index},${cell_index}] = ${cell}
+  </#list>
+</#list>
+
+<#-- Array of objects -->
+Students:
+<#list students as student>
+  Student #${student_index + 1}:
+    Name: ${student.name}
+    Grade: ${student.grade}
+    Subjects: ${student.subjects?join(", ")}
+</#list>
+
+<#-- Working with ranges (simulated with arrays) -->
+Numbers 1-5:
+<#list numbers as num>
+  ${num}<#if num_index < numbers?size - 1>, </#if>
+</#list>
+
+<#-- Filtering (manual) -->
+High scores (>= 80):
+<#list scores as score>
+  <#if score >= 80>
+    ${score}
+  </#if>
+</#list>
+
+<#-- Reverse array -->
+Reversed colors: ${colors?reverse?join(", ")}
+
+<#-- Array contains check -->
+Contains "apple": ${fruits?contains("apple")?c}
+Contains "mango": ${fruits?contains("mango")?c}

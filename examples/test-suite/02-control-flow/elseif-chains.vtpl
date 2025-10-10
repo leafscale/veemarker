@@ -1,0 +1,81 @@
+<#-- Complex conditional logic with elseif chains -->
+
+<#-- Grade calculation -->
+<#if score >= 90>
+  Grade: A - Excellent!
+<#elseif score >= 80>
+  Grade: B - Very Good!
+<#elseif score >= 70>
+  Grade: C - Good
+<#elseif score >= 60>
+  Grade: D - Pass
+<#else>
+  Grade: F - Fail
+</#if>
+
+<#-- Age group classification -->
+<#if age < 13>
+  Category: Child
+<#elseif age < 20>
+  Category: Teenager
+<#elseif age < 30>
+  Category: Young Adult
+<#elseif age < 60>
+  Category: Adult
+<#else>
+  Category: Senior
+</#if>
+
+<#-- Time-based greeting -->
+<#if hour < 6>
+  Good night! 🌙
+<#elseif hour < 12>
+  Good morning! ☀️
+<#elseif hour < 18>
+  Good afternoon! 🌤️
+<#elseif hour < 22>
+  Good evening! 🌆
+<#else>
+  Good night! 🌃
+</#if>
+
+<#-- Priority level -->
+<#if priority == "critical">
+  🔴 CRITICAL: Immediate action required!
+<#elseif priority == "high">
+  🟠 HIGH: Important task
+<#elseif priority == "medium">
+  🟡 MEDIUM: Normal priority
+<#elseif priority == "low">
+  🟢 LOW: Can wait
+<#else>
+  ❔ Unknown priority level
+</#if>
+
+<#-- HTTP status code interpretation -->
+<#if statusCode == 200>
+  ✅ Success
+<#elseif statusCode == 201>
+  ✅ Created
+<#elseif statusCode == 404>
+  ⚠️ Not Found
+<#elseif statusCode == 401>
+  🔒 Unauthorized
+<#elseif statusCode == 500>
+  ❌ Server Error
+<#else>
+  Status Code: ${statusCode}
+</#if>
+
+<#-- Complex business logic -->
+<#if !user.active>
+  Account is inactive
+<#elseif !user.verified>
+  Please verify your email
+<#elseif user.subscription == "expired">
+  Your subscription has expired
+<#elseif user.credits <= 0>
+  No credits remaining
+<#else>
+  Welcome back, ${user.name}!
+</#if>

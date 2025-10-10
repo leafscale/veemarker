@@ -1,0 +1,11 @@
+{
+  "sentence": "The quick brown fox jumps over the lazy dog",
+  "url": "https://example.com/page",
+  "text": "This is the old text with old values",
+  "csvData": "apple,banana,orange,grape",
+  "filePath": "/home/user/documents/report.pdf",
+  "email": "john.doe@example.com",
+  "paragraph": "First line of text\nSecond line of text\nThird line of text",
+  "queryString": "name=John&age=30&city=NewYork",
+  "productCode": "  prod-2024-abc  "
+}

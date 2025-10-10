@@ -1,0 +1,9 @@
+<#-- Test attempt/recover where attempt fails and recover runs -->
+Testing attempt/recover - error case:
+
+<#attempt>
+Attempting to access: ${nonexistent_var}
+This should fail: ${another_missing_var}
+<#recover>
+Recovery block executed! Error handled gracefully.
+</#attempt>

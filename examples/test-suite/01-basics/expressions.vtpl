@@ -1,0 +1,25 @@
+<#-- Arithmetic expressions -->
+Price: $${price}
+Quantity: ${quantity}
+Subtotal: $${price * quantity}
+Tax (8%): $${price * quantity * 0.08}
+Total: $${price * quantity * 1.08}
+
+<#-- Comparison expressions -->
+Is expensive: ${price > 50}
+Is bulk order: ${quantity >= 10}
+Qualifies for discount: ${quantity >= 5 && price > 25}
+
+<#-- Logical expressions -->
+Premium user: ${user.isPremium}
+Active subscription: ${user.hasSubscription}
+Can access premium features: ${user.isPremium && user.hasSubscription}
+Needs upgrade: ${!user.isPremium || !user.hasSubscription}
+
+<#-- String concatenation (using +) -->
+Full name: ${firstName + " " + lastName}
+Welcome message: ${"Welcome, " + firstName + "!"}
+
+<#-- Complex nested expressions -->
+<#-- Note: Ternary operator not yet supported in VeeMarker -->
+Simple calculation: $${price * quantity * 0.9}

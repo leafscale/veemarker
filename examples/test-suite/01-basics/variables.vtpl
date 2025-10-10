@@ -1,0 +1,30 @@
+<#-- Test basic variable interpolation -->
+Hello, ${name}!
+
+User Details:
+- Name: ${user.name}
+- Email: ${user.email}
+- Age: ${user.age}
+- Status: ${user.status}
+
+<#-- Test nested property access -->
+Address:
+${user.address.street}
+${user.address.city}, ${user.address.state} ${user.address.zip}
+
+<#-- Test array/list indexing -->
+First hobby: ${hobbies[0]}
+Second hobby: ${hobbies[1]}
+Third hobby: ${hobbies[2]}
+
+<#-- Test existing variable -->
+Optional field exists: ${optional}
+
+<#-- Test default value operator -->
+Missing field with default: ${missing!"Not provided"}
+Empty field with default: ${empty!"Default value"}
+Optional with default: ${optional!"Should not appear"}
+
+<#-- Test complex expressions -->
+Calculation: ${price * quantity}
+Concatenation: ${greeting} ${name}!

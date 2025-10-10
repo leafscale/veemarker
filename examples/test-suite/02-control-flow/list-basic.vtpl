@@ -1,0 +1,57 @@
+<#-- Basic list iteration examples -->
+
+<#-- Simple list of items -->
+Shopping Cart:
+<#list items as item>
+  - ${item}
+</#list>
+
+<#-- List with index -->
+Top Movies:
+<#list movies as movie>
+  ${movie_index + 1}. ${movie}
+</#list>
+
+<#-- Iterating over objects -->
+User List:
+<#list users as user>
+  Name: ${user.name}
+  Email: ${user.email}
+  Role: ${user.role}
+  ---
+</#list>
+
+<#-- Nested property access -->
+Products:
+<#list products as product>
+  ${product.name}: \$${product.price}
+  Description: ${product.description}
+  In Stock: ${product.inStock?then("Yes", "No")}
+  
+</#list>
+
+<#-- Using list item in conditions -->
+Task Status:
+<#list tasks as task>
+  <#if task.completed>
+    ✅ ${task.title} (Done)
+  <#else>
+    ☐ ${task.title} (Pending)
+  </#if>
+</#list>
+
+<#-- List with calculations -->
+Order Items:
+<#list orderItems as item>
+  ${item.name}: ${item.quantity} x \$${item.price} = \$${item.quantity * item.price}
+</#list>
+
+<#-- Empty list handling (manual check) -->
+<#if colors?has_content>
+Available Colors:
+<#list colors as color>
+  • ${color}
+</#list>
+<#else>
+No colors available.
+</#if>

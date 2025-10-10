@@ -1,0 +1,25 @@
+<#-- Main template demonstrating includes -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>${page_title!"Example Page"}</title>
+</head>
+<body>
+    <#-- Include the header component -->
+    <#include "05-templates/header.vtpl">
+
+    <main>
+        <h2>${content_title!"Welcome"}</h2>
+        <p>${content_body!"This is the main content area."}</p>
+
+        <#-- Conditionally include sections -->
+        <#if include_sidebar?? && include_sidebar>
+            <#include "05-templates/sidebar.vtpl">
+        </#if>
+    </main>
+
+    <#-- Include the footer component -->
+    <#include "05-templates/footer.vtpl">
+</body>
+</html>

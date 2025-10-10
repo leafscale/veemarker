@@ -1,0 +1,20 @@
+{
+  "user": {
+    "name": "Alice",
+    "active": true
+  },
+  "score": 95,
+  "age": 21,
+  "hasLicense": true,
+  "isLoggedIn": true,
+  "hasPermission": true,
+  "count": 3,
+  "status": "active",
+  "error": null,
+  "temperature": 28,
+  "humidity": 75,
+  "isOnline": true,
+  "isPremium": false,
+  "debugMode": true,
+  "verbose": false
+}

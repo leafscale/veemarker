@@ -1,0 +1,10 @@
+<#assign score = 85>
+<#if score >= 90>
+    Grade: A
+<#elseif score >= 80>
+    Grade: B
+<#elseif score >= 70>
+    Grade: C
+<#else>
+    Grade: F
+</#if>

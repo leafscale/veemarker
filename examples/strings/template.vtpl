@@ -1,0 +1,63 @@
+<#-- VeeMarker String Operations Example -->
+=====================================
+String Operations in VeeMarker
+=====================================
+
+1. Case Transformations
+-----------------------
+Original: ${title}
+Uppercase: ${title?upper_case}
+Lowercase: ${email?lower_case}
+Capitalize: ${title?capitalize}
+
+2. Trimming and Length
+----------------------
+Original with spaces: [${sentence}]
+Trimmed: [${sentence?trim}]
+Length of trimmed: ${sentence?trim?length}
+
+3. String Replacement
+---------------------
+Original: ${description}
+Replace 'sample' with 'example': ${description?replace("sample", "example")}
+
+4. Substring Operations
+-----------------------
+Path: ${path}
+Substring from index 4: ${path?substring(4)}
+Substring from 4 to 9: ${path?substring(4, 9)}
+
+5. String Checking
+------------------
+URL: ${url}
+Starts with 'https': ${url?starts_with("https")?c}
+Ends with '.com': ${url?ends_with(".com")?c}
+Contains 'example': ${url?contains("example")?c}
+
+6. Number and Boolean Formatting
+---------------------------------
+Price: ${price}
+Quantity: ${quantity}
+Is Active: ${is_active?c}
+Is Disabled: ${is_disabled?c}
+
+7. String Concatenation
+------------------------
+Combined: ${title} - ${description}
+
+8. Empty String Handling
+-------------------------
+Empty string with default: ${empty!"This was empty"}
+Whitespace string trimmed: [${whitespace?trim}]
+Length of empty: ${empty?length}
+
+9. Multiple Operations Chained
+-------------------------------
+Code transformation: ${code}
+  -> uppercase: ${code?upper_case}
+  -> replace underscores: ${code?upper_case?replace("_", " ")}
+  -> capitalize each word: ${code?replace("_", " ")?capitalize}
+
+=====================================
+End of String Operations Example
+=====================================

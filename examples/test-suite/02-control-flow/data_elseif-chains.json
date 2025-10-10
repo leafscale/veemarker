@@ -1,0 +1,14 @@
+{
+  "score": 75,
+  "age": 25,
+  "hour": 14,
+  "priority": "high",
+  "statusCode": 404,
+  "user": {
+    "name": "Bob",
+    "active": true,
+    "verified": true,
+    "subscription": "active",
+    "credits": 10
+  }
+}
