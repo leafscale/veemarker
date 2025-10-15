@@ -432,6 +432,364 @@ City: ${user.address.city}
 ${nickname!"No nickname"}
 ```
 
+## Working with Structs
+
+VeeMarker's `Any` type system works with maps and primitives, not arbitrary V structs. To use structs in templates, convert them using the provided helper functions.
+
+### Why Convert Structs?
+
+VeeMarker's `Any` type only supports:
+```v
+type Any = string | int | f64 | bool | []Any | map[string]Any
+```
+
+This design follows standard template engine patterns (Jinja2, Liquid, Handlebars) where templates work with **data** (maps/dictionaries), not **objects** (class instances).
+
+### Helper Functions
+
+#### `to_map[T](obj T) Any`
+
+Converts a single struct to `map[string]Any` using compile-time reflection.
+
+**Example:**
+```v
+struct Customer {
+    id    int
+    name  string
+    email string
+}
+
+customer := Customer{id: 1, name: 'Alice', email: 'alice@example.com'}
+
+// Convert struct to map
+data := {
+    'customer': veemarker.to_map(customer)
+}
+
+template := 'Customer: ${customer.name} (${customer.email})'
+mut engine := veemarker.new_engine(veemarker.EngineConfig{})
+result := engine.render_string(template, data)!
+```
+
+**Supported Field Types:**
+- Primitives: `string`, `int`, `f64`, `bool`
+- Arrays: `[]string`, `[]int`, `[]f64`, `[]bool` (converted to `[]Any`)
+
+**Unsupported Types:**
+Fields with unsupported types (nested structs, maps, custom types) are converted to empty strings. For complex hierarchies, convert nested structures manually.
+
+#### `to_map_array[T](objects []T) Any`
+
+Converts an array of structs to `[]Any` where each element is a `map[string]Any`.
+
+**Example:**
+```v
+customers := [
+    Customer{id: 1, name: 'Alice', email: 'alice@example.com'},
+    Customer{id: 2, name: 'Bob', email: 'bob@example.com'},
+    Customer{id: 3, name: 'Charlie', email: 'charlie@example.com'},
+]
+
+data := {
+    'customers': veemarker.to_map_array(customers)
+}
+
+template := '<#list customers as c>
+- ${c.name}: ${c.email}
+</#list>'
+
+result := engine.render_string(template, data)!
+```
+
+### Common Patterns
+
+#### Pattern 1: Detail Page (Single Object)
+
+```v
+struct Product {
+    id          int
+    name        string
+    price       f64
+    description string
+    tags        []string
+}
+
+product := get_product_by_id(123)
+
+data := {
+    'product': veemarker.to_map(product)
+}
+
+engine.render('product/detail.vtpl', data)!
+```
+
+Template (`product/detail.vtpl`):
+```html
+<div class="product">
+    <h1>${product.name}</h1>
+    <p>Price: $${product.price}</p>
+    <p>${product.description}</p>
+    <div class="tags">
+        <#list product.tags as tag>
+            <span class="tag">${tag}</span>
+        </#list>
+    </div>
+</div>
+```
+
+#### Pattern 2: List/Table (Multiple Objects)
+
+```v
+struct Order {
+    id     int
+    date   string
+    total  f64
+    status string
+}
+
+orders := get_user_orders(user_id)
+
+data := {
+    'orders': veemarker.to_map_array(orders)
+}
+
+engine.render('orders/list.vtpl', data)!
+```
+
+Template (`orders/list.vtpl`):
+```html
+<table>
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+    <#list orders as order>
+        <tr>
+            <td>${order.id}</td>
+            <td>${order.date}</td>
+            <td>$${order.total}</td>
+            <td>${order.status}</td>
+        </tr>
+    </#list>
+    </tbody>
+</table>
+```
+
+#### Pattern 3: Mixed Data Types
+
+Combining structs with other data types:
+
+```v
+struct User {
+    name  string
+    email string
+    role  string
+}
+
+user := get_current_user()
+
+data := {
+    'user':         veemarker.to_map(user)
+    'page_title':   veemarker.Any('Dashboard')
+    'is_admin':     veemarker.Any(user.role == 'admin')
+    'notification_count': veemarker.Any(get_notification_count())
+}
+
+engine.render('dashboard.vtpl', data)!
+```
+
+#### Pattern 4: Nested Structures
+
+When structs contain other structs, convert them manually:
+
+```v
+struct Address {
+    street  string
+    city    string
+    zipcode string
+}
+
+struct Customer {
+    name    string
+    email   string
+    address Address
+}
+
+customer := get_customer()
+
+// Manual conversion for nested struct
+data := {
+    'customer': map[string]veemarker.Any{
+        'name':  veemarker.Any(customer.name)
+        'email': veemarker.Any(customer.email)
+        'address': map[string]veemarker.Any{
+            'street':  veemarker.Any(customer.address.street)
+            'city':    veemarker.Any(customer.address.city)
+            'zipcode': veemarker.Any(customer.address.zipcode)
+        }
+    }
+}
+```
+
+Template:
+```html
+<div class="customer">
+    <h2>${customer.name}</h2>
+    <p>Email: ${customer.email}</p>
+    <address>
+        ${customer.address.street}<br>
+        ${customer.address.city}, ${customer.address.zipcode}
+    </address>
+</div>
+```
+
+### Web Framework Integration
+
+#### Example with Varel Framework
+
+```v
+pub fn (mut c CustomerController) index(mut ctx varel.Context) varel.Response {
+    // Get customers from database
+    customers := models.all_customers(mut c.db) or {
+        return ctx.internal_error('Failed to load customers')
+    }
+
+    // Convert structs to template-compatible format
+    return ctx.render_data('customer/index', {
+        'customers': veemarker.to_map_array(customers)
+        'title':     veemarker.Any('Customer List')
+    })
+}
+```
+
+Template (`customer/index.vtpl`):
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${title}</title>
+</head>
+<body>
+    <h1>${title}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+        <#list customers as customer>
+            <tr>
+                <td>${customer.id}</td>
+                <td>${customer.name}</td>
+                <td>${customer.email}</td>
+            </tr>
+        </#list>
+        </tbody>
+    </table>
+</body>
+</html>
+```
+
+### Performance Considerations
+
+**Conversion Cost:**
+- Uses compile-time reflection (`$for field in T.fields`)
+- V generates specialized code for each struct type
+- **No runtime reflection overhead**
+- Conversion happens once before rendering
+
+**Best Practice:**
+```v
+// Good: Convert once, use multiple times
+customers := get_customers()
+customers_any := veemarker.to_map_array(customers)
+
+data := {'customers': customers_any}
+engine.render(template1, data)!
+engine.render(template2, data)!
+
+// Avoid: Converting in loops
+for customer in customers {
+    // Don't convert repeatedly
+    data := {'customer': veemarker.to_map(customer)}
+    engine.render(template, data)!  // Wasteful
+}
+```
+
+### Troubleshooting
+
+**Error: Segmentation Fault**
+
+**Cause:** Passing raw struct directly to template
+
+```v
+// ❌ WRONG - Causes segfault
+struct Customer { name string }
+customer := Customer{name: 'Alice'}
+data := {'customer': veemarker.Any(customer)}  // Invalid!
+
+// ✓ CORRECT - Use conversion helper
+data := {'customer': veemarker.to_map(customer)}
+```
+
+**Error: Variable Not Found**
+
+**Cause:** Forgot to convert struct
+
+```v
+// ❌ WRONG
+data := {'customer': customer}  // Raw struct
+
+// ✓ CORRECT
+data := {'customer': veemarker.to_map(customer)}
+```
+
+**Error: Empty Field Values**
+
+**Cause:** Field type not supported by `to_map()`
+
+**Solution:** Check supported types or convert manually:
+
+```v
+struct ComplexData {
+    id      int
+    details map[string]string  // Not auto-converted
+}
+
+obj := ComplexData{...}
+
+// Manual conversion for complex fields
+mut data_map := veemarker.to_map(obj)
+if mut dm := data_map {
+    if mut m := dm as map[string]veemarker.Any {
+        mut details_any := map[string]veemarker.Any{}
+        for key, val in obj.details {
+            details_any[key] = veemarker.Any(val)
+        }
+        m['details'] = veemarker.Any(details_any)
+    }
+}
+```
+
+### Examples
+
+See `examples/structs/` for a complete working example and `test_struct_helpers.v` for test cases.
+
+Run the test:
+```bash
+v run .
+```
+
+For more details, see `STRUCT_USAGE.md` in the project root.
+
 ## Configuration
 
 ### Template Directory Structure (example)

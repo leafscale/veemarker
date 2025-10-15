@@ -12,6 +12,7 @@ VeeMarker brings powerful templating capabilities to V applications, enabling se
 - **Expression evaluation** - Full support for arithmetic, comparison, and logical operators
 - **Built-in functions** - String manipulation, collection operations, and more
 - **Control structures** - Conditionals (`<#if>`), loops (`<#list>`), and variable assignment (`<#assign>`)
+- **Struct helpers** - Automatic conversion of V structs to template-compatible data (`to_map()`, `to_map_array()`)
 - **NoParse directive** - `<#noparse>` for preserving literal content (JavaScript, examples, etc.)
 - **Hierarchical contexts** - Proper variable scoping in nested blocks
 - **Template caching** - Automatic caching with hot-reload support in development
@@ -23,7 +24,7 @@ VeeMarker brings powerful templating capabilities to V applications, enabling se
 
 1. Clone the repository to your project:
 ```bash
-git clone https://github.com/yourusername/veemarker.git
+git clone https://github.com/leafscale/veemarker.git
 ```
 
 2. Or add to your `v.mod`:
@@ -118,6 +119,33 @@ result := engine.render('welcome.html', data) or {
 - Comparison: `==`, `!=`, `<`, `<=`, `>`, `>=`
 - Logical: `&&`, `||`, `!`
 
+## Working with Structs
+
+VeeMarker provides helper functions to easily convert V structs for use in templates:
+
+```v
+struct Customer {
+    id    int
+    name  string
+    email string
+}
+
+// Convert a single struct
+customer := Customer{id: 1, name: 'Alice', email: 'alice@example.com'}
+data := {
+    'customer': veemarker.to_map(customer)
+}
+
+// Convert an array of structs
+customers := [Customer{...}, Customer{...}]
+data := {
+    'customers': veemarker.to_map_array(customers)
+}
+
+template := '<#list customers as c>${c.name}: ${c.email}</#list>'
+result := engine.render_string(template, data)!
+```
+
 ## Documentation
 
 For comprehensive documentation including all features, configuration options, and advanced usage, see [docs/veemarker.md](docs/veemarker.md).
@@ -133,3 +161,4 @@ Contributions are welcome! Please feel free to submit pull requests or open issu
 ## Credits
 
 VeeMarker is inspired by [Apache FreeMarker](https://freemarker.apache.org/) and adapted for the V programming language.
+
