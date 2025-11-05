@@ -391,6 +391,38 @@ fn evaluate_method_call(obj Any, method string, args []Expression, ctx Context) 
 				}
 			}
 		}
+		'html' {
+			// Escape HTML special characters for safe display of user content
+			// Prevents XSS attacks by converting HTML entities
+			// Order matters: ampersand must be escaped first to avoid double-escaping
+			// Follows OWASP recommendations for HTML entity encoding
+			str := any_to_string(obj)
+			return str.replace('&', '&amp;')      // Ampersand (must be first)
+				.replace('<', '&lt;')             // Less than
+				.replace('>', '&gt;')             // Greater than
+				.replace('"', '&quot;')           // Double quote
+				.replace("'", '&#39;')            // Single quote (&#39; preferred over &apos;)
+		}
+		'js_string' {
+			// Escape string for safe JavaScript embedding
+			// Prevents injection attacks by escaping quotes, backslashes, and control characters
+			// Order matters: backslash must be escaped first to avoid double-escaping
+			str := any_to_string(obj)
+			return str.replace('\\', '\\\\')      // Backslash (must be first)
+				.replace("'", "\\'")              // Single quote
+				.replace('"', '\\"')              // Double quote
+				.replace('\n', '\\n')             // Newline
+				.replace('\r', '\\r')             // Carriage return
+				.replace('\t', '\\t')             // Tab
+				.replace('\0', '\\0')             // Null byte
+				.replace('\u2028', '\\u2028')     // Unicode Line Separator (breaks JS strings)
+				.replace('\u2029', '\\u2029')     // Unicode Paragraph Separator (breaks JS strings)
+		}
+		'alpine_json' {
+			// Convert V data structure to JSON for Alpine.js x-data
+			// Manual JSON encoding to handle sumtype properly
+			return alpine_json_encode(obj)
+		}
 		else {
 			// Try to call as a regular method
 			return resolve_property(obj, method)!
@@ -597,4 +629,47 @@ fn any_to_int(value Any) !int {
 // Convert any value to string
 fn any_to_string(value Any) string {
 	return value_to_string(value)
+}
+
+// Convert Any value to JSON string for Alpine.js
+// Manual implementation to handle sumtype without json codec issues
+fn alpine_json_encode(value Any) string {
+	match value {
+		string {
+			// Escape string for JSON
+			escaped := value.replace('\\', '\\\\')
+				.replace('"', '\\"')
+				.replace('\n', '\\n')
+				.replace('\r', '\\r')
+				.replace('\t', '\\t')
+				.replace('\b', '\\b')
+				.replace('\f', '\\f')
+			return '"${escaped}"'
+		}
+		int {
+			return value.str()
+		}
+		f64 {
+			return value.str()
+		}
+		bool {
+			return if value { 'true' } else { 'false' }
+		}
+		map[string]Any {
+			mut parts := []string{}
+			for key, val in value {
+				json_key := alpine_json_encode(key)
+				json_val := alpine_json_encode(val)
+				parts << '${json_key}:${json_val}'
+			}
+			return '{${parts.join(',')}}'
+		}
+		[]Any {
+			mut parts := []string{}
+			for item in value {
+				parts << alpine_json_encode(item)
+			}
+			return '[${parts.join(',')}]'
+		}
+	}
 }

@@ -10,13 +10,15 @@ VeeMarker brings powerful templating capabilities to V applications, enabling se
 
 - **FreeMarker-compatible syntax** - Familiar syntax for Java/FreeMarker developers
 - **Expression evaluation** - Full support for arithmetic, comparison, and logical operators
-- **Built-in functions** - String manipulation, collection operations, and more
+- **Built-in functions** - String manipulation, collection operations, and JavaScript integration
+- **JavaScript integration** - Safe HTML escaping (`?html`), JS string escaping (`?js_string`), and JSON conversion (`?alpine_json`) for Alpine.js and other frameworks
 - **Control structures** - Conditionals (`<#if>`), loops (`<#list>`), and variable assignment (`<#assign>`)
 - **Struct helpers** - Automatic conversion of V structs to template-compatible data (`to_map()`, `to_map_array()`)
 - **NoParse directive** - `<#noparse>` for preserving literal content (JavaScript, examples, etc.)
 - **Hierarchical contexts** - Proper variable scoping in nested blocks
 - **Template caching** - Automatic caching with hot-reload support in development
 - **Error handling** - Clear error messages with line numbers
+- **Security** - XSS prevention and injection protection with built-in escaping functions
 
 ## Quick Start
 
@@ -105,6 +107,9 @@ result := engine.render('welcome.html', data) or {
 - `${user.name}` - Access object properties
 - `${items[0]}` - Array/map access
 - `${name?upper_case}` - Built-in functions
+- `${text?html}` - HTML escaping (XSS prevention)
+- `${text?js_string}` - JavaScript string escaping
+- `${data?alpine_json}` - JSON conversion for Alpine.js
 
 ### Directives
 - `<#if condition>...</#if>` - Conditional rendering

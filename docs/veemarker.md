@@ -28,7 +28,12 @@ VeeMarker is a template engine for V that implements the FreeMarker syntax. It a
 
 ## Installation & Setup
 
-### Method 1: Local Directory
+### Method 1: Install from VPM
+```
+v install leafscale.veemarker
+```
+
+### Method 2: Local Directory
 
 Place the veemarker directory in your project:
 ```
@@ -48,7 +53,7 @@ myproject/
 
 or symlink it within your project directory.
 
-### Method 2: Module Path
+### Method 3: Module Path
 
 Add veemarker to your module path or specify it in your `v.mod`:
 ```v
@@ -56,20 +61,15 @@ Module {
     name: 'myapp'
     description: 'My application'
     version: '1.0.0'
-    dependencies: ['veemarker']
+    dependencies: ['leafscale.veemarker']
 }
-```
-
-### Method 3: Use VPM
-```
-vpm install veemarker
 ```
 
 ### Importing VeeMarker
 
 In your V code:
 ```v
-import veemarker
+import leafscale.veemarker
 
 fn main() {
     // Your code here
@@ -365,6 +365,105 @@ ${items?reverse}             <!-- Reverse array -->
 ${items?join(", ")}          <!-- Join array elements -->
 ${items?contains("apple")}   <!-- Check if contains item -->
 ```
+
+### JavaScript Integration Functions
+
+These functions enable safe server-to-client data passing for JavaScript frameworks like Alpine.js:
+
+```freemarker
+${text?html}                 <!-- Escape HTML special characters -->
+${text?js_string}            <!-- Escape for JavaScript strings -->
+${data?alpine_json}          <!-- Convert to JSON for Alpine.js -->
+```
+
+#### HTML Escaping (`?html`)
+
+Safely display user-generated content in HTML by escaping special characters. Prevents XSS attacks.
+
+**Escapes:**
+- `&` → `&amp;`
+- `<` → `&lt;`
+- `>` → `&gt;`
+- `"` → `&quot;`
+- `'` → `&#39;`
+
+**Usage:**
+```freemarker
+<div class="comment">
+    ${user_comment?html}
+</div>
+
+<!-- Prevent XSS attacks -->
+<p>Search results for: ${search_query?html}</p>
+```
+
+#### JavaScript String Escaping (`?js_string`)
+
+Embed strings safely in JavaScript code by escaping quotes, backslashes, and control characters. Prevents JavaScript injection attacks.
+
+**Escapes:**
+- `\` → `\\`
+- `'` → `\'`
+- `"` → `\"`
+- `\n` → `\\n`
+- `\r` → `\\r`
+- `\t` → `\\t`
+- `\0` → `\\0`
+- Unicode line separators (U+2028, U+2029)
+
+**Usage:**
+```freemarker
+<script>
+const message = "${alert_message?js_string}";
+const userName = "${user.name?js_string}";
+
+// Safe from injection
+alert("Welcome, ${user.name?js_string}!");
+</script>
+```
+
+#### Alpine.js JSON Conversion (`?alpine_json`)
+
+Convert V data structures to JSON format for Alpine.js `x-data` attributes. Handles all VeeMarker `Any` type variants.
+
+**Supported Types:**
+- `string` → JSON string (`"value"`)
+- `int`, `f64` → Number (`42`, `3.14`)
+- `bool` → Boolean (`true`, `false`)
+- `map[string]Any` → JSON object (`{"key": "value"}`)
+- `[]Any` → JSON array (`[1, 2, 3]`)
+
+**Usage:**
+```freemarker
+<!-- Pass single object to Alpine.js -->
+<div x-data='${product?alpine_json}'>
+    <h1 x-text="name"></h1>
+    <p>Price: $<span x-text="price"></span></p>
+    <button x-show="in_stock">Add to Cart</button>
+</div>
+
+<!-- Pass array of objects -->
+<div x-data='{ items: ${products?alpine_json} }'>
+    <template x-for="item in items" :key="item.id">
+        <div x-text="item.name"></div>
+    </template>
+</div>
+
+<!-- Complex data structure -->
+<div x-data='{
+    user: ${user?alpine_json},
+    items: ${cart_items?alpine_json},
+    total: ${cart_total}
+}'>
+    <p x-text="user.name"></p>
+    <p>Items: <span x-text="items.length"></span></p>
+</div>
+```
+
+**Security Note:** All three functions (`?html`, `?js_string`, `?alpine_json`) are designed to prevent injection attacks. Always use the appropriate escaping function for your context:
+- Use `?html` when outputting to HTML content
+- Use `?js_string` when embedding in JavaScript string literals
+- Use `?alpine_json` when passing data to Alpine.js or other JavaScript frameworks
 
 ### Examples
 
@@ -1050,11 +1149,11 @@ fn prepare_user_data(user User) map[string]veemarker.Any {
 
 ## Complete Example
 
-Here's a complete example showing VeeMarker in a web application:
+Here's a complete example showing VeeMarker in a veb application:
 
 ```v
 // main.v
-import veemarker
+import leafscale.veemarker as veemarker
 import veb
 
 struct App {
