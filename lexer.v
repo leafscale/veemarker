@@ -639,6 +639,53 @@ fn (mut l Lexer) tokenize_directive_expression() ! {
 			if l.peek() == `=` {
 				l.add_token(.greater_equal, '>=')
 				l.advance_n(2)
+				continue
+			}
+
+			// Determine if this is a comparison operator or directive end
+			// Strategy: > is a comparison operator only if we're EXPECTING an operator
+			// (i.e., after a complete left operand that hasn't been used yet)
+			// > is directive_end if we just completed a comparison (last token was an operand after an operator)
+			mut is_comparison := false
+			if l.tokens.len >= 2 {
+				last_token := l.tokens[l.tokens.len - 1]
+				second_last_token := l.tokens[l.tokens.len - 2]
+
+				// > is a comparison operator if:
+				// - Last token is a potential left operand (identifier, number, string, rparen, rbracket)
+				// - AND second-to-last is NOT a binary/comparison operator
+				// This prevents treating the second > in "a > b >" as a comparison
+				is_operand := last_token.type in [
+					.identifier,
+					.number_literal,
+					.string_literal,
+					.rparen,
+					.rbracket,
+				]
+
+				second_last_is_operator := second_last_token.type in [
+					.equals,
+					.not_equals,
+					.less_than,
+					.less_equal,
+					.greater_than,
+					.greater_equal,
+					.plus,
+					.minus,
+					.multiply,
+					.divide,
+					.modulo,
+				]
+
+				is_comparison = is_operand && !second_last_is_operator
+			} else if l.tokens.len == 1 {
+				// Only one token so far - treat > as directive end
+				is_comparison = false
+			}
+
+			if is_comparison {
+				// This is a greater-than comparison operator
+				l.add_single_char_token(.greater_than)
 			} else {
 				// This is the end of directive
 				l.add_token(.directive_end, '>')

@@ -151,7 +151,7 @@ Comments are not included in the output:
 
 ### If/ElseIf/Else
 
-Conditional rendering based on expressions:
+Conditional rendering based on expressions. All comparison operators (`>`, `<`, `>=`, `<=`, `==`, `!=`) and logical operators (`&&`, `||`, `!`) are supported:
 
 ```freemarker
 <#if user.age >= 18>
@@ -165,6 +165,16 @@ Conditional rendering based on expressions:
 <#-- Testing boolean values -->
 <#if user.isAdmin>
     <div class="admin-panel">...</div>
+</#if>
+
+<#-- Using > operator -->
+<#if items?size > 0>
+    <p>You have ${items?size} items in your cart</p>
+</#if>
+
+<#-- Complex conditions with multiple operators -->
+<#if score > 50 && status == "active">
+    <span class="badge pass">Passed & Active</span>
 </#if>
 
 <#-- Testing for existence -->
@@ -313,6 +323,9 @@ ${-a}       <!-- Negation -->
 
 ### Comparison Operators
 
+All comparison operators work in both interpolations (`${}`) and directives (`<#if>`, `<#elseif>`, etc.):
+
+**In Interpolations:**
 ```freemarker
 ${a == b}   <!-- Equal to -->
 ${a != b}   <!-- Not equal to -->
@@ -321,6 +334,36 @@ ${a <= b}   <!-- Less than or equal -->
 ${a > b}    <!-- Greater than -->
 ${a >= b}   <!-- Greater than or equal -->
 ```
+
+**In Directives:**
+```freemarker
+<#if count > 0>
+    Found ${count} items
+</#if>
+
+<#if score >= 90>
+    Grade: A (Excellent!)
+<#elseif score >= 80>
+    Grade: B (Good)
+<#elseif score < 60>
+    Grade: F (Need improvement)
+</#if>
+
+<#if age > 18 && age < 65>
+    Regular adult pricing
+</#if>
+
+<#if url?size > 0>
+    <a href="${url}">Link</a>
+</#if>
+```
+
+**Comparison Operator Details:**
+- `>` and `<` work with numbers and strings (lexicographic comparison for strings)
+- `>=` and `<=` include equality in the comparison
+- `==` tests for value equality
+- `!=` tests for inequality
+- All operators can be combined with logical operators (`&&`, `||`, `!`)
 
 ### Logical Operators
 
