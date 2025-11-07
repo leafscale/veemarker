@@ -1,6 +1,6 @@
 module main
 
-import veemarker
+import leafscale.veemarker
 
 struct Person {
 	name string

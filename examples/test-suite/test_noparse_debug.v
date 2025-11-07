@@ -1,4 +1,4 @@
-import veemarker
+import leafscale.veemarker
 
 fn main() {
 	// Test noparse directive

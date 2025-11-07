@@ -1,6 +1,6 @@
 module main
 
-import veemarker
+import leafscale.veemarker
 
 // Example from bug report - shows the CORRECT way to handle structs
 struct Customer {

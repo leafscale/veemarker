@@ -307,13 +307,17 @@ fn (mut e Engine) render_node(node Node, mut ctx Context) !string {
 
 			// Bind arguments to parameters
 			for param in macro.parameters {
-				if param in node.arguments {
+				if param.name in node.arguments {
 					// Evaluate the argument expression
-					arg_value := evaluate_expression(node.arguments[param] or { LiteralExpr{''} }, ctx)!
-					macro_ctx.set(param, arg_value)
+					arg_value := evaluate_expression(node.arguments[param.name] or { LiteralExpr{''} }, ctx)!
+					macro_ctx.set(param.name, arg_value)
+				} else if default_expr := param.default_value {
+					// Use the default value from macro definition
+					default_val := evaluate_expression(default_expr, ctx)!
+					macro_ctx.set(param.name, default_val)
 				} else {
-					// Set default value or empty string if no argument provided
-					macro_ctx.set(param, '')
+					// No argument provided and no default - set to empty string
+					macro_ctx.set(param.name, '')
 				}
 			}
 

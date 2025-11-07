@@ -643,18 +643,17 @@ fn (mut l Lexer) tokenize_directive_expression() ! {
 			}
 
 			// Determine if this is a comparison operator or directive end
-			// Strategy: > is a comparison operator only if we're EXPECTING an operator
-			// (i.e., after a complete left operand that hasn't been used yet)
-			// > is directive_end if we just completed a comparison (last token was an operand after an operator)
+			// Strategy: Combine lookback (what came before) with lookahead (what comes after)
+			// > is a comparison operator if:
+			//   1. We have an operand before it (lookback)
+			//   2. There's a valid right-hand operand after it (lookahead)
+			// Otherwise it's directive_end
 			mut is_comparison := false
 			if l.tokens.len >= 2 {
 				last_token := l.tokens[l.tokens.len - 1]
 				second_last_token := l.tokens[l.tokens.len - 2]
 
-				// > is a comparison operator if:
-				// - Last token is a potential left operand (identifier, number, string, rparen, rbracket)
-				// - AND second-to-last is NOT a binary/comparison operator
-				// This prevents treating the second > in "a > b >" as a comparison
+				// Check if last token is a potential left operand
 				is_operand := last_token.type in [
 					.identifier,
 					.number_literal,
@@ -663,6 +662,7 @@ fn (mut l Lexer) tokenize_directive_expression() ! {
 					.rbracket,
 				]
 
+				// Check if second-to-last token indicates we're in the middle of an expression
 				second_last_is_operator := second_last_token.type in [
 					.equals,
 					.not_equals,
@@ -675,9 +675,55 @@ fn (mut l Lexer) tokenize_directive_expression() ! {
 					.multiply,
 					.divide,
 					.modulo,
+					.dot,
+					// NOTE: .question is NOT here - url?size produces a value that can be compared
 				]
 
-				is_comparison = is_operand && !second_last_is_operator
+				// Check if second-to-last is a directive keyword that indicates directive completion
+				// These keywords appear before the final identifier/operand in a directive
+				second_last_is_completion_keyword := second_last_token.type in [
+					.keyword_include,  // <#include "path">
+					.keyword_stop,     // <#stop "message">
+					.keyword_return,   // <#return value>
+					.keyword_as,       // <#list items as item>
+					.keyword_sep,      // Used in list separators
+					.keyword_macro,    // <#macro macroName>
+				]
+
+				// Lookahead: Check what comes after >
+				// If there's a potential right-hand operand for a comparison, treat > as comparison
+				// Be conservative: only consider it a comparison if we see clear patterns
+				mut has_rhs_operand := false
+				if l.pos + 1 < l.input.len {
+					next_ch := l.input[l.pos + 1]
+					// Pattern 1: > followed by whitespace + operand (e.g., "> 0", "> x")
+					// This is the most common comparison pattern
+					if next_ch.is_space() {
+						mut peek_pos := l.pos + 2
+						// Skip additional whitespace
+						for peek_pos < l.input.len && l.input[peek_pos].is_space() {
+							peek_pos++
+						}
+						if peek_pos < l.input.len {
+							after_space := l.input[peek_pos]
+							// Check for comparison operands: numbers, strings, identifiers, expressions
+							has_rhs_operand = after_space.is_digit() ||
+							                  after_space == `"` || after_space == `'` ||
+							                  after_space == `(` || after_space == `!` ||
+							                  (after_space.is_letter() || after_space == `_`)
+						}
+					}
+					// Pattern 2: > followed immediately by operand with no space is rare in comparisons
+					// and more likely to be content like ">Hello" which should be directive_end + text
+				}
+
+				// > is a comparison if:
+				// - We have a left operand
+				// - Second-to-last is NOT an operator (prevents "a > b >")
+				// - Second-to-last is NOT a completion keyword
+				// - There's a right-hand operand after >
+				is_comparison = is_operand && !second_last_is_operator &&
+				                !second_last_is_completion_keyword && has_rhs_operand
 			} else if l.tokens.len == 1 {
 				// Only one token so far - treat > as directive end
 				is_comparison = false

@@ -1,4 +1,4 @@
-import veemarker
+import leafscale.veemarker
 
 fn main() {
 	println('Testing VeeMarker switch/case statements...')

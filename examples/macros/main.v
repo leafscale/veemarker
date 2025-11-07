@@ -1,6 +1,6 @@
 module main
 
-import veemarker
+import leafscale.veemarker
 
 fn main() {
 	println('VeeMarker Macros Example')

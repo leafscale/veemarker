@@ -1,5 +1,5 @@
 import os
-import veemarker
+import leafscale.veemarker
 
 fn main() {
 	template_content := os.read_file('test_page_links.vtpl') or {

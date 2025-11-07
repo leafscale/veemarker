@@ -1,6 +1,6 @@
 module main
 
-import veemarker
+import leafscale.veemarker
 
 fn main() {
 	// Test template with multi-line assign

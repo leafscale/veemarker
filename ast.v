@@ -84,11 +84,18 @@ pub:
 	content string
 }
 
+// Parameter for a macro definition
+struct MacroParameter {
+pub:
+	name          string
+	default_value ?Expression // Optional default value
+}
+
 // <#macro name params>...</#macro> directive
 struct MacroNode {
 pub:
 	name       string
-	parameters []string
+	parameters []MacroParameter
 	body       []Node
 }
 

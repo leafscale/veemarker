@@ -36,7 +36,7 @@
 						<div class="info">
 							<div class="module">veemarker</div>
 							<div class="toggle-version-container">
-								<span>20251104 f001561</span>
+								<span>20251110 c560e72</span>
 								<div
 									id="dark-mode-toggle"
 									role="switch"
@@ -59,67 +59,8 @@
 				<nav class="search hidden"></nav>
 				<nav class="content hidden">
 					<ul>
-						<li class="open"><a href="#readme_veemarker">README</a></li>
-<li class="open"><a href="#evaluate_expression">fn evaluate_expression</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#evaluate_expression_or_default">fn evaluate_expression_or_default</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#is_truthy">fn is_truthy</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#new_context">fn new_context</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#new_engine">fn new_engine</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#new_lexer">fn new_lexer</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#new_parser">fn new_parser</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#resolve_index">fn resolve_index</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#resolve_property">fn resolve_property</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#to_map">fn to_map</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#to_map_array">fn to_map_array</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#Any">type Any</a>        <ul>
-</ul>
-</li>
-<li class="open"><a href="#Lexer.tokenize">type Lexer</a>        <ul>
-<li><a href="#Lexer.tokenize">fn tokenize</a></li>
-</ul>
-</li>
-<li class="open"><a href="#Parser.parse">type Parser</a>        <ul>
-<li><a href="#Parser.parse">fn parse</a></li>
-</ul>
-</li>
-<li class="open"><a href="#Context">struct Context</a>        <ul>
-<li><a href="#Context.new_child">fn new_child</a></li>
-<li><a href="#Context.set">fn set</a></li>
-<li><a href="#Context.get">fn get</a></li>
-<li><a href="#Context.has">fn has</a></li>
-<li><a href="#Context.set_macro">fn set_macro</a></li>
-<li><a href="#Context.get_macro">fn get_macro</a></li>
-</ul>
-</li>
-<li class="open"><a href="#Engine">struct Engine</a>        <ul>
-<li><a href="#Engine.render">fn render</a></li>
-<li><a href="#Engine.render_string">fn render_string</a></li>
-</ul>
-</li>
-<li class="open"><a href="#EngineConfig">struct EngineConfig</a>        <ul>
-</ul>
+						<li class="open active">
+<div class="menu-row"><a href="./veemarker.html">veemarker</a></div>
 </li>
 
 					</ul>
@@ -130,7 +71,134 @@
 					<div class="doc-content">
 								<section id="readme_veemarker" class="doc-node">
 			<div class="title"><h1> veemarker <a href="#readme_veemarker">#</a></h1></div>
+<h1 id="veemarker">VeeMarker</h1>
+<p>A FreeMarker-inspired template engine for the V programming language.</p>
+<h2 id="overview">Overview</h2>
+<p>VeeMarker brings powerful templating capabilities to V applications, enabling separation of presentation logic from business logic. It's designed for rendering HTML, configuration files, emails, or any text-based format with dynamic content.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li><strong>FreeMarker-compatible syntax</strong> - Familiar syntax for Java/FreeMarker developers</li>
+<li><strong>Expression evaluation</strong> - Full support for arithmetic, comparison, and logical operators</li>
+<li><strong>Built-in functions</strong> - String manipulation, collection operations, and JavaScript integration</li>
+<li><strong>JavaScript integration</strong> - Safe HTML escaping (<code>?html</code>), JS string escaping (<code>?js_string</code>), and JSON conversion (<code>?alpine_json</code>) for Alpine.js and other frameworks</li>
+<li><strong>Control structures</strong> - Conditionals (<code>&lt;#if&gt;</code>), loops (<code>&lt;#list&gt;</code>), and variable assignment (<code>&lt;#assign&gt;</code>)</li>
+<li><strong>Struct helpers</strong> - Automatic conversion of V structs to template-compatible data (<code>to_map()</code>, <code>to_map_array()</code>)</li>
+<li><strong>NoParse directive</strong> - <code>&lt;#noparse&gt;</code> for preserving literal content (JavaScript, examples, etc.)</li>
+<li><strong>Hierarchical contexts</strong> - Proper variable scoping in nested blocks</li>
+<li><strong>Template caching</strong> - Automatic caching with hot-reload support in development</li>
+<li><strong>Error handling</strong> - Clear error messages with line numbers</li>
+<li><strong>Security</strong> - XSS prevention and injection protection with built-in escaping functions</li></ul>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="installation">Installation</h3>
+<ol>
+<li>Clone the repository to your project:</li></ol>
+<pre><code class="language-bash">git clone https<span class="token punctuation">:</span><span class="token comment">//github.com/leafscale/veemarker.git</span></code></pre>
+<ol start="2">
+<li>Or add to your <code>v.mod</code>:</li></ol>
+<pre><code class="language-v"><span class="token symbol">Module</span> <span class="token punctuation">{</span>
+    dependencies<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'veemarker'</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span></code></pre>
+<h3 id="basic-usage">Basic Usage</h3>
+<pre><code class="language-v"><span class="token keyword">import</span> veemarker
 
+<span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Create template engine</span>
+    <span class="token keyword">mut</span> engine <span class="token operator">:=</span> veemarker<span class="token punctuation">.</span><span class="token function">new_engine</span><span class="token punctuation">(</span>veemarker<span class="token punctuation">.</span><span class="token symbol">EngineConfig</span><span class="token punctuation">{</span>
+        template_dir<span class="token punctuation">:</span> <span class="token string">'./templates'</span>
+        dev_mode<span class="token punctuation">:</span> <span class="token boolean">true</span>  <span class="token comment">// Enable hot-reload</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token comment">// Prepare data</span>
+    <span class="token keyword">mut</span> data <span class="token operator">:=</span> <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>veemarker<span class="token punctuation">.</span><span class="token symbol">Any</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    data<span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'Alice'</span>
+    data<span class="token punctuation">[</span><span class="token string">'items'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span>veemarker<span class="token punctuation">.</span><span class="token function">Any</span><span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> veemarker<span class="token punctuation">.</span><span class="token function">Any</span><span class="token punctuation">(</span><span class="token string">'banana'</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+    <span class="token comment">// Render template string</span>
+    template <span class="token operator">:=</span><span class="token string">'Hello, </span><span class="token string_interp">$</span>{name}<span class="token string">! You have </span><span class="token string_interp">$</span>{items<span class="token operator">?</span>size}<span class="token string"> items.'</span>
+    result <span class="token operator">:=</span> engine<span class="token punctuation">.</span><span class="token function">render_string</span><span class="token punctuation">(</span>template<span class="token punctuation">,</span> data<span class="token punctuation">)</span> <span class="token keyword">or</span> <span class="token punctuation">{</span>
+        <span class="token function">eprintln</span><span class="token punctuation">(</span><span class="token string">'Template error: </span><span class="token string_interp">$</span>{err}<span class="token string">'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span> <span class="token comment">// Output: Hello, Alice! You have 2 items.</span>
+<span class="token punctuation">}</span></code></pre>
+<h3 id="template-example">Template Example</h3>
+<p>Create a file <code>templates/welcome.html</code>:</p>
+<pre><code class="language-html"><span class="token operator"><</span><span class="token operator">!</span>DOCTYPE html<span class="token operator">></span>
+<span class="token operator"><</span>html<span class="token operator">></span>
+<span class="token operator"><</span>head<span class="token operator">></span>
+    <span class="token operator"><</span>title<span class="token operator">></span>Welcome $<span class="token punctuation">{</span>user<span class="token punctuation">.</span>name<span class="token punctuation">}</span><span class="token operator"><</span><span class="token operator">/</span>title<span class="token operator">></span>
+<span class="token operator"><</span><span class="token operator">/</span>head<span class="token operator">></span>
+<span class="token operator"><</span>body<span class="token operator">></span>
+    <span class="token operator"><</span>h1<span class="token operator">></span>Hello<span class="token punctuation">,</span> $<span class="token punctuation">{</span>user<span class="token punctuation">.</span>name<span class="token punctuation">}</span><span class="token operator">!</span><span class="token operator"><</span><span class="token operator">/</span>h1<span class="token operator">></span>
+
+    <span class="token operator"><</span>#        <span class="token operator"><</span>p<span class="token operator">></span>Welcome<span class="token punctuation">,</span> administrator<span class="token operator">!</span><span class="token operator"><</span><span class="token operator">/</span>p<span class="token operator">></span>
+    <span class="token operator"><</span>#        <span class="token operator"><</span>p<span class="token operator">></span>Welcome<span class="token punctuation">,</span> user<span class="token operator">!</span><span class="token operator"><</span><span class="token operator">/</span>p<span class="token operator">></span>
+    <span class="token operator"><</span><span class="token operator">/</span>#
+    <span class="token operator"><</span>h2<span class="token operator">></span>Your Items<span class="token punctuation">:</span><span class="token operator"><</span><span class="token operator">/</span>h2<span class="token operator">></span>
+    <span class="token operator"><</span>ul<span class="token operator">></span>
+        <span class="token operator"><</span>#            <span class="token operator"><</span>li<span class="token operator">></span>$<span class="token punctuation">{</span>item_index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">.</span> $<span class="token punctuation">{</span>item<span class="token operator">?</span>cap_first<span class="token punctuation">}</span><span class="token operator"><</span><span class="token operator">/</span>li<span class="token operator">></span>
+        <span class="token operator"><</span><span class="token operator">/</span>#    <span class="token operator"><</span><span class="token operator">/</span>ul<span class="token operator">></span>
+<span class="token operator"><</span><span class="token operator">/</span>body<span class="token operator">></span>
+<span class="token operator"><</span><span class="token operator">/</span>html<span class="token operator">></span></code></pre>
+<p>Render the template file:</p>
+<pre><code class="language-v">result <span class="token operator">:=</span> engine<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token string">'welcome.html'</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span> <span class="token keyword">or</span> <span class="token punctuation">{</span>
+    <span class="token function">eprintln</span><span class="token punctuation">(</span><span class="token string">'Error: </span><span class="token string_interp">$</span>{err}<span class="token string">'</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="template-syntax">Template Syntax</h2>
+<h3 id="interpolations">Interpolations</h3>
+<ul>
+<li><code>${variable}</code> - Output variable value</li>
+<li><code>${user.name}</code> - Access object properties</li>
+<li><code>${items[0]}</code> - Array/map access</li>
+<li><code>${name?upper_case}</code> - Built-in functions</li>
+<li><code>${text?html}</code> - HTML escaping (XSS prevention)</li>
+<li><code>${text?js_string}</code> - JavaScript string escaping</li>
+<li><code>${data?alpine_json}</code> - JSON conversion for Alpine.js</li></ul>
+<h3 id="directives">Directives</h3>
+<ul>
+<li><code>&lt;#if condition&gt;...&lt;/#if&gt;</code> - Conditional rendering</li>
+<li><code>&lt;#list items as item&gt;...&lt;/#list&gt;</code> - Iteration</li>
+<li><code>&lt;#assign name = value&gt;</code> - Variable assignment</li>
+<li><code>&lt;#assign name&gt;...content...&lt;/#assign&gt;</code> - Multi-line template assignment</li>
+<li><code>&lt;#noparse&gt;...&lt;/#noparse&gt;</code> - Preserve literal content without processing</li>
+<li><code>&lt;#-- comment --&gt;</code> - Comments (no output)</li></ul>
+<h3 id="operators">Operators</h3>
+<ul>
+<li>Arithmetic: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code></li>
+<li>Comparison: <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code></li>
+<li>Logical: <code>&amp;&amp;</code>, <code>||</code>, <code>!</code></li></ul>
+<h2 id="working-with-structs">Working with Structs</h2>
+<p>VeeMarker provides helper functions to easily convert V structs for use in templates:</p>
+<pre><code class="language-v"><span class="token keyword">struct</span> <span class="token symbol">Customer</span> <span class="token punctuation">{</span>
+    id    <span class="token builtin">int</span>
+    name  <span class="token builtin">string</span>
+    email <span class="token builtin">string</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Convert a single struct</span>
+customer <span class="token operator">:=</span> <span class="token symbol">Customer</span><span class="token punctuation">{</span>id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'Alice'</span><span class="token punctuation">,</span> email<span class="token punctuation">:</span> <span class="token string">'alice@example.com'</span><span class="token punctuation">}</span>
+data <span class="token operator">:=</span> <span class="token punctuation">{</span>
+    <span class="token string">'customer'</span><span class="token punctuation">:</span> veemarker<span class="token punctuation">.</span><span class="token function">to_map</span><span class="token punctuation">(</span>customer<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Convert an array of structs</span>
+customers <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token symbol">Customer</span><span class="token punctuation">{</span><span class="token punctuation">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token symbol">Customer</span><span class="token punctuation">{</span><span class="token punctuation">...</span><span class="token punctuation">}</span><span class="token punctuation">]</span>
+data <span class="token operator">:=</span> <span class="token punctuation">{</span>
+    <span class="token string">'customers'</span><span class="token punctuation">:</span> veemarker<span class="token punctuation">.</span><span class="token function">to_map_array</span><span class="token punctuation">(</span>customers<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+template <span class="token operator">:=</span><span class="token string">'<#list customers as c></span><span class="token string_interp">$</span>{c<span class="token punctuation">.</span>name}<span class="token string">: </span><span class="token string_interp">$</span>{c<span class="token punctuation">.</span>email}<span class="token string"></#list>'</span>
+result <span class="token operator">:=</span> engine<span class="token punctuation">.</span><span class="token function">render_string</span><span class="token punctuation">(</span>template<span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token operator">!</span></code></pre>
+<h2 id="documentation">Documentation</h2>
+<p>For comprehensive documentation including all features, configuration options, and advanced usage, see <a href="docs/veemarker.md">docs/veemarker.md</a>.</p>
+<h2 id="license">License</h2>
+<p>MIT License - See <a href="LICENSE">LICENSE</a> file for details.</p>
+<h2 id="contributing">Contributing</h2>
+<p>Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.</p>
+<h2 id="credits">Credits</h2>
+<p>VeeMarker is inspired by <a href="https://freemarker.apache.org/">Apache FreeMarker</a> and adapted for the V programming language.</p>
 
 </section>
 
@@ -358,9 +426,71 @@
 </section>
 
 
-						<div class="footer">Powered by vdoc. Generated on: 4 Nov 2025 21:24:15</div>
+						<div class="footer">Powered by vdoc. Generated on: 6 Nov 2025 19:50:27</div>
 					</div>
-					
+					<div class="doc-toc"><ul><li class="open"><a href="#readme_veemarker">README</a></li>
+<li class="open"><a href="#evaluate_expression">fn evaluate_expression</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#evaluate_expression_or_default">fn evaluate_expression_or_default</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#is_truthy">fn is_truthy</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#new_context">fn new_context</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#new_engine">fn new_engine</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#new_lexer">fn new_lexer</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#new_parser">fn new_parser</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#resolve_index">fn resolve_index</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#resolve_property">fn resolve_property</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#to_map">fn to_map</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#to_map_array">fn to_map_array</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Any">type Any</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Lexer.tokenize">type Lexer</a>        <ul>
+<li><a href="#Lexer.tokenize">fn tokenize</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Parser.parse">type Parser</a>        <ul>
+<li><a href="#Parser.parse">fn parse</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Context">struct Context</a>        <ul>
+<li><a href="#Context.new_child">fn new_child</a></li>
+<li><a href="#Context.set">fn set</a></li>
+<li><a href="#Context.get">fn get</a></li>
+<li><a href="#Context.has">fn has</a></li>
+<li><a href="#Context.set_macro">fn set_macro</a></li>
+<li><a href="#Context.get_macro">fn get_macro</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Engine">struct Engine</a>        <ul>
+<li><a href="#Engine.render">fn render</a></li>
+<li><a href="#Engine.render_string">fn render_string</a></li>
+</ul>
+</li>
+<li class="open"><a href="#EngineConfig">struct EngineConfig</a>        <ul>
+</ul>
+</li>
+</ul></div>
 				</div>
 			</div>
 		</div>

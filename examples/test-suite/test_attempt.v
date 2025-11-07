@@ -1,4 +1,4 @@
-import veemarker
+import leafscale.veemarker
 import os
 
 fn main() {

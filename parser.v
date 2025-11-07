@@ -919,14 +919,29 @@ fn (mut p Parser) parse_macro_directive() !MacroNode {
 	macro_name := p.current().value
 	p.advance()
 
-	// Parse parameters
-	mut parameters := []string{}
+	// Parse parameters with optional default values
+	mut parameters := []MacroParameter{}
 	for p.current().type != .directive_end && p.current().type != .eof {
 		if p.current().type == .identifier {
-			parameters << p.current().value
+			param_name := p.current().value
 			p.advance()
+
+			// Check for default value: param="value" or param=expression
+			mut default_value := ?Expression(none)
+			if p.current().type == .equals {
+				p.advance() // Skip =
+				// Parse the default value expression
+				default_value = p.parse_expression()!
+			}
+
+			parameters << MacroParameter{
+				name: param_name
+				default_value: default_value
+			}
+		} else if p.current().type == .comma {
+			p.advance() // Skip commas between parameters
 		} else {
-			p.advance() // Skip other tokens like commas
+			p.advance() // Skip any other unexpected tokens
 		}
 	}
 	p.expect(.directive_end)!
