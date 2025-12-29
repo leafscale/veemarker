@@ -669,8 +669,10 @@ fn (mut p Parser) parse_assign_directive() !AssignNode {
 		// that should be treated as plain text
 
 		// Get the current position in the original input
+		// Note: token.pos is stored as (lexer.pos - value.len), so for '>' it's
+		// one position before the actual '>' character. We need +2 to get past it.
 		current_token := p.current()
-		start_pos_in_input := current_token.pos + 1  // Position after the closing >
+		start_pos_in_input := current_token.pos + 2  // Position after the closing >
 
 		p.advance() // Skip the directive_end token
 
